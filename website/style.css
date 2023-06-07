@@ -1,0 +1,84 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(skyblue, lightblue, blue);
+    font-family: 'Noto Sans HK', sans-serif;
+}
+
+.card {
+    background-image: llinear-gradient(skyblue, lightblue, blue);
+    box-shadow: 11px 15px 20px 3px rgba(0,0,0,0.71);
+    color: #ffffff;
+    border-radius: 15px;
+    padding: 3em;
+    width: 100%;
+    max-width: 420px;
+    margin: 1em;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.weather {
+    padding: 10px;
+}
+
+.btn {
+    margin: 0.5em;
+    border-radius: 50%;
+    border: none;
+    height: 2em;
+    width: 2em;
+    outline: none;
+    font-size: 1.3em;
+    background: #7C7C7C2B;
+    color: #FFFFFF;
+    cursor: pointer;
+    transition: 0.2s ease-in-out;
+}
+
+.btn:hover {
+    background: #7C7C7C6B;;
+}
+
+input.search-zip {
+    width: 250px;
+    border: none;
+    outline: none;
+    padding: 0.8em 1em;
+    border-radius: 20px;
+    background: #7C7C7C2B;
+    color: #FFFFFF;
+    font-size: 1em;
+}
+
+.description {
+    text-transform: capitalize;
+}
+
+.feeling {
+    width: 320px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border: none;
+    outline: none;
+    padding: 0.8em 1em;
+    border-radius: 20px;
+    background: #7C7C7C2B;
+    color: #FFFFFF;
+    font-size: 1em;
+    font: inherit;
+}
