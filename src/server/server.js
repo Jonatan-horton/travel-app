@@ -16,7 +16,8 @@ const { response } = require('express');
 app.use(cors());
 
 // Initialize the main project folder
-app.use(express.static('website'));
+// app.use(express.static('website'));
+app.use(express.static('dist'));
 
 
 // Setup Server
