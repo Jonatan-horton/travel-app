@@ -5,7 +5,7 @@ const geoNameURL = 'http://api.geonames.org/postalCodeSearchJSON?placename=';
 const geoNameKey = '&maxRows=10&username=travelapp2023';
 const weatherBitURL = 'https://api.weatherbit.io/v2.0/forecast/daily?city=';
 const weatherBitKey = '&key=8c0409b4b7ee441ab6163b24fa5fd992';
-const pixaBayURL = 'https://pixabay.com/api/?key="+pixaBayKey+"&q="+encodeURIComponent('red roses')';
+const pixaBayURL = 'https://pixabay.com/api/?key='+pixaBayKey+"&q="+encodeURIComponent('');
 const pixaBayKey = '37141574-2ddc101cd3b4e55a33814b42e';
 
 
