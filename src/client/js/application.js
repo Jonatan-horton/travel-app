@@ -1,6 +1,13 @@
-/* Personal API key for OpenWeatherMap API*/
+/* Personal API key for genoname, weatherbit, and pixabay APIs*/
 const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
 const apiKey = '&units=imperial&appid=58163d165072b2e4eb461b90e9804a23';
+const geoNameURL = 'http://api.geonames.org/postalCodeSearchJSON?placename=';
+const geoNameKey = '&maxRows=10&username=travelapp2023';
+const weatherBitURL = 'https://api.weatherbit.io/v2.0/forecast/daily?city=';
+const weatherBitKey = '&key=8c0409b4b7ee441ab6163b24fa5fd992';
+const pixaBayURL = 'https://pixabay.com/api/?key="+pixaBayKey+"&q="+encodeURIComponent('red roses')';
+const pixaBayKey = '37141574-2ddc101cd3b4e55a33814b42e';
+
 
 // New date stored in a variable to be displayed
 let d = new Date()
@@ -28,7 +35,7 @@ function getWeather(e) {
         postData('/add', {
             temperature, 
             city,
-            description, 
+            description,
             icon, 
             windSpeed,
             humidity,
