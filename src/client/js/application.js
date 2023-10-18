@@ -1,84 +1,104 @@
-/* Personal API key for genoname, weatherbit, and pixabay APIs*/
-const baseURL = 'http://api.openweathermap.org/data/2.5/weather?zip=';
-const apiKey = '&units=imperial&appid=58163d165072b2e4eb461b90e9804a23';
-const geoNameURL = 'http://api.geonames.org/postalCodeSearchJSON?placename=';
-const geoNameKey = '&maxRows=10&username=travelapp2023';
-const weatherBitURL = 'https://api.weatherbit.io/v2.0/forecast/daily?city=';
-const weatherBitKey = '&key=8c0409b4b7ee441ab6163b24fa5fd992';
-const pixaBayURL = 'https://pixabay.com/api/?key='+pixaBayKey+"&q="+encodeURIComponent('');
-const pixaBayKey = '37141574-2ddc101cd3b4e55a33814b42e';
+
+import fetch from "node-fetch";
+
+// This event listener listens for a click on the search button
+document.getElementById("btn").addEventListener("click", userInput);
 
 
-// New date stored in a variable to be displayed
-let d = new Date()
-let dateToday =  d.getMonth() + '/' + d.getDay() + '/' + d.getFullYear();
+// Function that fires off when the click has been registered
+async function userInput(e) {
+  e.preventDefault();
 
-// Event listener for the click
-document.getElementById('generate').addEventListener('click', getWeather);
+  // Take the city and date when user inputs the data and store them in variables
+  const city = document.getElementById("city-input").value;
+  const date = document.getElementById("date-picker").value;
 
-// Function that will gather information and execute it once click has been used.
-function getWeather(e) {
-    e.preventDefault();
-    const zipCode = document.getElementById('zip-input').value;
-    const userFeeling = document.getElementById('user-feeling').value;
-    getWeatherInfo(baseURL, zipCode, apiKey)
-    .then(function (weatherData) {
-        const temperature = weatherData.main.temp;
-        const city = weatherData.name;
-        const description = weatherData.weather[0].description;
-        const icon = weatherData.weather[0].icon;
-        const windSpeed = weatherData.wind.speed;
-        const humidity = weatherData.main.humidity;
-        const feeling = userFeeling;
-        const country = weatherData.sys.country;
-        // Weather info posted to the server
-        postData('/add', {
-            temperature, 
-            city,
-            description,
-            icon, 
-            windSpeed,
-            humidity,
-            feeling,
-            country
-        }).then(() => {updateUI();})
-        // updateUI function to be called after the click is fired off and the weather info is gathered
+  // Get the current date.
+  let currentDate = new Date().toLocaleDateString();
+
+  if (parseInt(date) >= parseInt(currentDate)) {
+    // Store the day month and year
+    const day = date.slice(0, 2);
+    const month = date.slice(3, 5);
+    const year = date.slice(6, 10);
+
+    // Then change the order so and store in a variable so we can use this format for weatherbit api
+    const fixDate = year + "-" + month + "-" + day;
+
+    await postData("/clientData", {
+      city: city,
+      date: fixDate,
     });
+
+    // functions to call servers after post request
+    await callServer("/getWeatherbit");
+
+    await callServer("/getPix");
+
+    await callServer("/getRest");
+
+    const getPlanData = await callServer("/getData");
+
+    console.log(getPlanData);
+    updateUI();
+  } else {
+    alert("Please enter a valid date.");
+  }
 }
 
-// Takes the url + zip + API and calls the API for the data
-const getWeatherInfo = async (baseURL, zipCode, apiKey) => {
+// post route for server
+async function postData(url, tripData) {
+  const response = await fetch(url, {
+    method: "POST",
+    mode: "cors",
+    credentials: "same-origin",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(tripData),
+  });
+}
 
-    const response = await fetch(baseURL + zipCode + apiKey)
-    try {
-        const newData = await response.json();
-        console.log(newData)
-        return newData;
-    } 
-    catch(error) {
-        console.log("error", error);
-    }
+// call to server for data
+const callServer = async (url) => {
+  const asyncParams = {
+    method: "GET",
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  };
+
+  const res = await fetch(url, asyncParams);
+  try {
+    const data = await res.json();
+    return data;
+  } catch {
+    console.log(`Error: ${res.statusText}`);
+  }
 };
 
-// POST function to server
-async function postData(url, data) {
-    await fetch(url, {
-        method: 'POST',
-        credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json'},
-        body: JSON.stringify(data),
-    });
-}
-// GET function that gets the information from the server
+// function that updates the UI with a call to the server
 async function updateUI() {
-    const response = await fetch('/retrieve');
-    const lastEntry = await response.json();
-    document.querySelector('.city').innerText = "Weather in " + lastEntry.city + ", " + lastEntry.country;
-    document.querySelector('.temperature').innerText = Math.floor(lastEntry.temperature) + "°F";
-    document.querySelector('.description').innerText = lastEntry.description;
-    document.querySelector('.date').innerText = dateToday;
-    document.querySelector('.humidity').innerText = "Humidity: " + lastEntry.humidity + "%";
-    document.querySelector('.wind').innerText = "Wind Speed: " + lastEntry.windSpeed + " " + "mph";
-    document.querySelector('.icon').src = "https://openweathermap.org/img/wn/" + lastEntry.icon +"@2x.png";
-    document.querySelector('.content').innerText = lastEntry.feeling;
-}
+    const response = await fetch("/getData");
+    const uiData = await response.json();
+    console.log(uiData);
+    document.querySelector(".city-image").src = uiData.image1;
+    document.querySelector(".image-icon").src = uiData.flag;
+    document.querySelector(".list-country").innerHTML =
+      uiData.name + ", " + uiData.countryCode;
+    document.querySelector(".call-code").innerHTML = "+" + uiData.callingCode;
+    document.querySelector(".currency").innerHTML =
+      uiData.currency + "(" + uiData.currencySym + ")";
+    document.querySelector(".language").innerHTML = uiData.language;
+    document.querySelector(".city-name").innerHTML = uiData.name;
+    document.querySelector(
+      ".icon-image"
+    ).src = `https://www.weatherbit.io/static/img/icons/${uiData.icon}.png`;
+    document.querySelector(".description").innerHTML = uiData.description;
+    document.querySelector(".temp").innerHTML = uiData.temp + "°C";
+    document.querySelector(".departure").innerHTML = uiData.date;
+    document.querySelector(".arrival").innerHTML = uiData.date;
+  }
+
+export { callServer, updateUI };
