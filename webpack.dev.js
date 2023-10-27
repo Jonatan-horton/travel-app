@@ -28,6 +28,9 @@ module.exports = {
         ]
     },
     plugins: [
+        new WorkboxPlugin.GenerateSW({
+            maximumFileSizeToCacheInBytes: 5000000
+        }),
         new HtmlWebPackPlugin({
             template: "./src/client/views/index.html",
             filename: "./index.html",

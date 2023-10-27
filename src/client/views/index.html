@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Travel App</title>
-    <link rel="stylesheet" href="style.css">
+    <!-- <link rel="stylesheet" href="style.scss"> -->
     <!-- Favicon-->
     <link rel="shorcut icon" type="image/jpg" href="../media/island_01.jpeg">
     <!-- font awesome cdn -->
@@ -50,7 +50,7 @@
                   <img src="" alt="" class="image-icon" />
                   <ul class="image-description">
                     <li class="list-country"></li>
-                    <li>Pnone Number: <span class="call-code"></span></li>
+                    <li>Country Call Code: <span class="call-code"></span></li>
                     <li>Currency: <span class="currency"></span></li>
                     <li>Language: <span class="language"></span></li>
                   </ul>
@@ -72,9 +72,6 @@
                 <div class="travel-date">
                   Departure Date: <span class="departure"></span>
                 </div>
-                <div class="travel-date">
-                    Arrival Date: <span class="arrival"></span>
-                  </div>
               </div>
             </div>
           </div>
@@ -85,7 +82,7 @@
             window.addEventListener("load", () => {
                 navigator.serviceWorker.register("/service-worker.js");
             });
-        }
+        };
     </script>
 </body>
 

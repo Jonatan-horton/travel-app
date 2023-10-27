@@ -1,4 +1,3 @@
-
 import fetch from "node-fetch";
 
 // This event listener listens for a click on the search button
@@ -37,9 +36,6 @@ async function userInput(e) {
 
     await callServer("/getRest");
 
-    const getPlanData = await callServer("/getData");
-
-    console.log(getPlanData);
     updateUI();
   } else {
     alert("Please enter a valid date.");
@@ -80,14 +76,14 @@ const callServer = async (url) => {
 
 // function that updates the UI with a call to the server
 async function updateUI() {
-    const response = await fetch("/getData");
+    const response = await fetch("/retrieve");
     const uiData = await response.json();
     console.log(uiData);
     document.querySelector(".city-image").src = uiData.image1;
     document.querySelector(".image-icon").src = uiData.flag;
     document.querySelector(".list-country").innerHTML =
       uiData.name + ", " + uiData.countryCode;
-    document.querySelector(".call-code").innerHTML = "+" + uiData.callingCode;
+    document.querySelector(".call-code").innerHTML = uiData.callingCode;
     document.querySelector(".currency").innerHTML =
       uiData.currency + "(" + uiData.currencySym + ")";
     document.querySelector(".language").innerHTML = uiData.language;
